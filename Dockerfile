@@ -1,5 +1,5 @@
 # Use a specific version of the OpenJDK image
-FROM openjdk:11-alpine
+FROM openjdk:19-alpine
 
 # Set the working directory
 WORKDIR /app
