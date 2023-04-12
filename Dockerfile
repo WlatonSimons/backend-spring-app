@@ -5,7 +5,7 @@ WORKDIR /app
 COPY build.gradle settings.gradle gradlew /app/
 COPY gradle /app/gradle
 # Download and install Gradle
-RUN chmod +x ./gradlew --version
+RUN chmod +x ./gradlew
 # Copy the project files
 COPY . /app
 # Build the
