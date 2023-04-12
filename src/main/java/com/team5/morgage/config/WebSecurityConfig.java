@@ -17,15 +17,11 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http.csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/**").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
-                .and()
-                .cors()
-                .and()
-                .authorizeRequests();
+                .and().cors()
+                .and().authorizeRequests();
         return http.build();
     }
 }
