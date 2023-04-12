@@ -24,4 +24,4 @@ USER appuser
 EXPOSE 8080
 
 # Set the startup command
-CMD ["java", "-jar", "build/libs/morgage-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "build/libs/morgage.jar"]

@@ -17,8 +17,9 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-task myJar(type: Jar) {
-	archiveFileName.set('morgage.jar')
+//change default jar name
+bootJar {
+	archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
 }
 
 dependencies {
