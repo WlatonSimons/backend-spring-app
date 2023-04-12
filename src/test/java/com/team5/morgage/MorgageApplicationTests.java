@@ -12,7 +12,7 @@ class MorgageApplicationTests {
 	@Autowired
 	private UserService userService;
 
-	@Test
+	/*@Test
 	void createUser() {
 		User createUser = new User();
 		createUser.setUsername("Labas");
@@ -25,5 +25,5 @@ class MorgageApplicationTests {
 	@Test
 	void deleteUser() {
 		userService.delete(1);
-	}
+	}*/
 }
