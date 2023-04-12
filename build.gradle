@@ -17,6 +17,9 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+task myJar(type: Jar) {
+	archiveFileName.set('morgage.jar')
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
