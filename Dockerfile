@@ -5,10 +5,11 @@ WORKDIR /app
 COPY build.gradle settings.gradle gradlew /app/
 COPY gradle /app/gradle
 # Download and install Gradle
-RUN ./gradlew --version
+RUN chmod +x ./gradlew
 # Copy the project files
 COPY . /app
-# Build the project
+# Build the
+
 RUN ./gradlew build
 # Set the startup command
 CMD ["java", "-jar", "build/libs/morgage.jar"]
