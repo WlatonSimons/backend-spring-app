@@ -1,6 +1,13 @@
 # Use a specific version of the OpenJDK image
 FROM openjdk:19-alpine
 
+# Copy the Gradle wrapper script
+COPY gradlew /app
+COPY gradle /app/gradle
+
+# Make the Gradle wrapper script executable
+RUN chmod +x /app/gradlew
+
 # Set the working directory
 WORKDIR /app
 
