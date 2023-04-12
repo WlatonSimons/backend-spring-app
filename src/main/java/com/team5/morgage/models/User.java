@@ -1,9 +1,10 @@
-package com.team5.morgage.user.model;
+package com.team5.morgage.models;
 
 import jakarta.persistence.*;
 
 @Entity
-public class UserModel {
+@Table(name = "user_model")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,5 +49,15 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

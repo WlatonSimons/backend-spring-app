@@ -1,5 +1,5 @@
 FROM openjdk:19-alpine
-# Set the working directory
+# Set the working directorys
 WORKDIR /app
 # Copy the Gradle files
 COPY build.gradle settings.gradle gradlew /app/
