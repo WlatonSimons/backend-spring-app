@@ -21,8 +21,11 @@ public class WebSecurityConfig {
         http.csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/**").permitAll()
-                .and().cors()
-                .and().authorizeRequests();
+                .requestMatchers("/h2-console/**").permitAll()
+                .and()
+                .cors()
+                .and()
+                .authorizeRequests();
         return http.build();
     }
 }

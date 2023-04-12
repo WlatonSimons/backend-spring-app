@@ -1,5 +1,5 @@
 package com.team5.morgage.config;
-/*
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
@@ -18,4 +18,4 @@ public class UserDetailsConfig {
         manager.createUser(User.withUsername("admin").password(passwordEncoder.encode("password")).roles("USER", "ADMIN").build());
         return manager;
     }
-}*/
+}
