@@ -10,6 +10,6 @@ RUN chmod +x ./gradlew --version
 COPY . /app
 # Build the
 
-RUN chmod +x ./gradlew --version
+RUN chmod +x ./gradlew build
 # Set the startup command
 CMD ["java", "-jar", "build/libs/morgage.jar"]
