@@ -18,10 +18,10 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 .requestMatchers("/**").permitAll()
                 .and().cors()
-                .and().authorizeRequests();
+                .and().authorizeHttpRequests();
         return http.build();
     }
 }
