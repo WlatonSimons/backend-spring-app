@@ -6,6 +6,8 @@ import com.team5.morgage.exceptions.UserNotFoundException;
 import com.team5.morgage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,38 +19,48 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public User createUser(User userRequest) {
+        checkIfUserAlreadyExist(userRequest);
+
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        return userRepository.save(userRequest);
     }
 
-    public User getUserById(long userId) {
+    public User getUserById(Long userId) {
         return userRepository
                 .findById(userId)
                 .orElseThrow(() ->
                         new UserNotFoundException("Stats with id: " + userId + ", does not exist."));
     }
 
-    public User updateUser(User user) {
-        List<User> allUsers = getAllUsers();
-        User updateUser = new User();
-
-        for (User usr : allUsers) {
-            if (usr.getUsername() != null && usr.getUsername().equals(user.getUsername())) {
-                throw new UserAlreadyExistsException("User with name: " + user.getUsername() + " already exists");
+    public void checkIfUserAlreadyExist(User userRequest) {
+        for (User usr : getAllUsers()) {
+            if (usr.getUsername() != null && usr.getUsername().equals(userRequest.getUsername())) {
+                throw new UserAlreadyExistsException("User with name: " + userRequest.getUsername() + " already exists");
             }
-            if (usr.getEmail() != null && usr.getEmail().equals(user.getEmail())) {
-                throw new UserAlreadyExistsException("User with email: " + user.getEmail() + " already exists");
+            if (usr.getEmail() != null && usr.getEmail().equals(userRequest.getEmail())) {
+                throw new UserAlreadyExistsException("User with email: " + userRequest.getEmail() + " already exists");
             }
         }
+    }
 
-        if (user.getUsername() != null) {
-            updateUser.setUsername(user.getUsername());
+    public User updateUser(User userRequest) {
+        checkIfUserAlreadyExist(userRequest);
+
+        User updateUser = userRepository.findById(userRequest.getId())
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + userRequest.getId() + "does not exist"));
+
+        if (userRequest.getUsername() != null) {
+            updateUser.setUsername(userRequest.getUsername());
         }
-        if (user.getPassword() != null) {
-            updateUser.setPassword(user.getPassword());
+        if (userRequest.getPassword() != null) {
+            updateUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         }
-        if (user.getEmail() != null) {
-            updateUser.setEmail(user.getEmail());
+        if (userRequest.getEmail() != null) {
+            updateUser.setEmail(userRequest.getEmail());
         }
 
         return userRepository.save(updateUser);
@@ -60,7 +72,7 @@ public class UserService {
         return users;
     }
 
-    public void delete(long userId) {
+    public void delete(Long userId) {
         userRepository.delete(getUserById(userId));
     }
 }
