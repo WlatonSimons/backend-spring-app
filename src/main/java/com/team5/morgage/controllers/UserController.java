@@ -5,11 +5,18 @@ import com.team5.morgage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
+
 @RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/")
+    public String home() {
+        return "BE works";
+    }
 
     @GetMapping("/user/{userId}")
     public User getUserById(@PathVariable long userId) {
