@@ -6,7 +6,8 @@ import com.team5.morgage.exceptions.UserNotFoundException;
 import com.team5.morgage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private static final int SALT_LENGTH = 16;
+    private static final int HASH_LENGTH = 32;
+    private static final int PARALLELISM = 1;
+    private static final int MEMORY = 1 << 12;
+    private static final int ITERATIONS = 3;
+
+    PasswordEncoder passwordEncoder =
+            new Argon2PasswordEncoder(SALT_LENGTH, HASH_LENGTH, PARALLELISM, MEMORY, ITERATIONS);
 
     public User createUser(User userRequest) {
         checkIfUserAlreadyExist(userRequest);
@@ -30,10 +38,13 @@ public class UserService {
     }
 
     public User getUserById(Long userId) {
-        return userRepository
-                .findById(userId)
-                .orElseThrow(() ->
-                        new UserNotFoundException("Stats with id: " + userId + ", does not exist."));
+        return userRepository.findById(userId)
+                .orElseThrow(
+                        () -> UserNotFoundException.builder()
+                                .statusCode(HttpStatus.NOT_FOUND.value())
+                                .message("User with id: " + userId + " does not exist")
+                                .build()
+                );
     }
 
     public void checkIfUserAlreadyExist(User userRequest) {
@@ -51,7 +62,12 @@ public class UserService {
         checkIfUserAlreadyExist(userRequest);
 
         User updateUser = userRepository.findById(userRequest.getId())
-                .orElseThrow(() -> new UserNotFoundException("User with id: " + userRequest.getId() + "does not exist"));
+                .orElseThrow(
+                        () -> UserNotFoundException.builder()
+                                .statusCode(HttpStatus.NOT_FOUND.value())
+                                .message("User with id: " + userRequest.getId() + " does not exist")
+                                .build()
+                );
 
         if (userRequest.getUsername() != null) {
             updateUser.setUsername(userRequest.getUsername());
