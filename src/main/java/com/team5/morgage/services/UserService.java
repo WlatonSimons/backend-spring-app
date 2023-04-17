@@ -17,14 +17,14 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
     private static final int SALT_LENGTH = 16;
     private static final int HASH_LENGTH = 32;
     private static final int PARALLELISM = 1;
     private static final int MEMORY = 1 << 12;
     private static final int ITERATIONS = 3;
+
+    @Autowired
+    private UserRepository userRepository;
 
     PasswordEncoder passwordEncoder =
             new Argon2PasswordEncoder(SALT_LENGTH, HASH_LENGTH, PARALLELISM, MEMORY, ITERATIONS);
@@ -39,12 +39,9 @@ public class UserService {
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(
-                        () -> UserNotFoundException.builder()
-                                .statusCode(HttpStatus.NOT_FOUND.value())
-                                .message("User with id: " + userId + " does not exist")
-                                .build()
-                );
+                .orElseThrow(() ->
+                        new UserNotFoundException(HttpStatus.NOT_FOUND.value() +
+                                " User with id: " + userId + " does not exist"));
     }
 
     public void checkIfUserAlreadyExist(User userRequest) {
@@ -62,12 +59,9 @@ public class UserService {
         checkIfUserAlreadyExist(userRequest);
 
         User updateUser = userRepository.findById(userRequest.getId())
-                .orElseThrow(
-                        () -> UserNotFoundException.builder()
-                                .statusCode(HttpStatus.NOT_FOUND.value())
-                                .message("User with id: " + userRequest.getId() + " does not exist")
-                                .build()
-                );
+                .orElseThrow(() ->
+                        new UserNotFoundException(HttpStatus.NOT_FOUND.value() +
+                                " User with id: " + userRequest.getId() + " does not exist"));
 
         if (userRequest.getUsername() != null) {
             updateUser.setUsername(userRequest.getUsername());

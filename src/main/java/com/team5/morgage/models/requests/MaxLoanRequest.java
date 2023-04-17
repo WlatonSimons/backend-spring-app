@@ -6,8 +6,8 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MaxLoanRequest {
-    private boolean isJustMe;
+    private boolean isSingleApplicant;
     private float netIncome;
-    private int familyMembers;
-    private float monthlyObligation;
+    private int dependants;
+    private float monthlyObligationAmount;
 }

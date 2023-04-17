@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
-        ErrorResponse error = ErrorResponse.builder()
-                .statusCode(ex.getStatusCode())
-                .message(ex.getMessage())
-                .build();
-
-        return new ResponseEntity<>(error, HttpStatus.valueOf(ex.getStatusCode()));
-    }
-
-    // ToDo: Add more handles for different exceptions
-    //  or maybe there is a way to make it dynamic?
+//    @ExceptionHandler(UserNotFoundException.class)
+//    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
+//        ErrorResponse error = ErrorResponse.builder()
+//                .statusCode(ex.getStatusCode())
+//                .message(ex.getMessage())
+//                .build();
+//
+//        return new ResponseEntity<>(error, HttpStatus.valueOf(ex.getStatusCode()));
+//    }
+//
+//    // ToDo: Add more handles for different exceptions
+//    //  or maybe there is a way to make it dynamic?
 }
