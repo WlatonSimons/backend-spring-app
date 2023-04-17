@@ -1,10 +1,10 @@
 package com.team5.morgage.models.responses;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
 @Builder
-@Getter
+@Data
 public class MonthlyPaymentResponse {
     private float monthlyPayment;
     private float totalPayableAmount;

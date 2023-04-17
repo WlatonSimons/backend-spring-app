@@ -1,5 +1,6 @@
 package com.team5.morgage.controllers;
 
+import com.team5.morgage.models.Application;
 import com.team5.morgage.models.requests.MonthlyPaymentRequest;
 import com.team5.morgage.models.responses.MonthlyPaymentResponse;
 import com.team5.morgage.models.requests.MaxLoanRequest;
@@ -16,12 +17,17 @@ public class CalculatorController {
     private CalculatorService calculatorService;
 
     @PostMapping("/calculator/maxLoan")
-    public float calculateMaxLoan(@RequestBody MaxLoanRequest request) {
-        return calculatorService.calculateMaxLoan(request);
+    public float calculateMaxLoan(@RequestBody MaxLoanRequest maxLoanRequest) {
+        return calculatorService.calculateMaxLoan(maxLoanRequest);
     }
 
     @PostMapping("/calculator/monthlyPayment")
-    public MonthlyPaymentResponse calculateMonthlyPayment(@RequestBody MonthlyPaymentRequest request) {
-        return calculatorService.calculateMonthlyPayment(request);
+    public MonthlyPaymentResponse calculateMonthlyPayment(@RequestBody MonthlyPaymentRequest monthlyPaymentRequest) {
+        return calculatorService.calculateMonthlyPayment(monthlyPaymentRequest);
+    }
+
+    @PostMapping("/calculator/submitApplication")
+    public Application saveSubmittedApplication(@RequestBody Application application) {
+        return calculatorService.saveSubmittedApplication(application);
     }
 }
