@@ -50,6 +50,8 @@ dependencies {
 	implementation group: 'com.kosprov.jargon2', name: 'jargon2-api', version: '1.1.1'
 	// https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.0.2'
 }
 
 tasks.named('test') {

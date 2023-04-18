@@ -16,6 +16,11 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
+    @PostMapping("/user/login")
+    public User getUserByLoginData(@RequestBody User user) {
+        return userService.getUserByLoginData(user);
+    }
+
     @PostMapping("/user/create")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);

@@ -44,6 +44,19 @@ public class UserService {
                                 " User with id: " + userId + " does not exist"));
     }
 
+    public User getUserByLoginData(User loginUser) {
+        List<User> users = new ArrayList<>();
+        Streamable.of(userRepository.findAll()).forEach(users::add);
+
+        for (User user : users) {
+            if (user.getUsername().equals(loginUser.getUsername())
+                    && passwordEncoder.matches(loginUser.getPassword(), user.getPassword())) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     public void checkIfUserAlreadyExist(User userRequest) {
         for (User usr : getAllUsers()) {
             if (usr.getUsername() != null && usr.getUsername().equals(userRequest.getUsername())) {
