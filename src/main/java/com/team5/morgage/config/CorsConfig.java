@@ -19,6 +19,7 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedOrigin("https://mortgage-loan.onrender.com/");
+        config.addAllowedOrigin("https://mortgage-loan-test.onrender.com/");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
