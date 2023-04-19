@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
+import java.sql.Timestamp;
+
 @Entity
 public class Application {
 
@@ -114,6 +116,17 @@ public class Application {
     @NotNull(message = "Is there a certification radio button is mandatory")
     @Column(name = "is_certification", nullable = false)
     private boolean certification;
+
+    @Column(name = "date", nullable = false)
+    private Timestamp date;
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
 
     public Long getId() {
         return id;
