@@ -9,7 +9,7 @@ public class CalculationHelper {
     }
 
     public float calculateInterestPaidInOneYear(float calculatedInterestRate, float mortgageAmount) {
-        return calculatedInterestRate * mortgageAmount;
+        return calculatedInterestRate * mortgageAmount / 100;
     }
 
     public float calculateInterestPaidDuringWholePeriod(float interestRate, float managementFee,
