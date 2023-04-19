@@ -17,11 +17,11 @@ public class MaxLoanRequest {
     @PositiveOrZero(message = "Net Income can`t be negative value")
     private float netIncome;
 
-    @NotNull(message = "Dependants is mandatory, if none put 0(zero)")
-    @PositiveOrZero(message = "Dependants must be 0 or more")
+    @NotNull(message = "Dependants is mandatory")
+    @PositiveOrZero(message = "Dependants can`t be negative value")
     private int familyMember;
 
-    @NotNull(message = "Monthly Obligation is mandatory, if none put 0(zero)")
+    @NotNull(message = "Monthly Obligation is mandatory")
     @PositiveOrZero(message = "Monthly Obligation can`t be negative value")
     private float monthlyObligationAmount;
 }

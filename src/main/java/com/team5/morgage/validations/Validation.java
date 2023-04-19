@@ -42,4 +42,8 @@ public class Validation {
         }
         return monthlyPaymentRequest.getMortgageTerm() >= 1 && monthlyPaymentRequest.getMortgageTerm() <= 30;
     }
+
+    public boolean isMortgageAmountValid(MonthlyPaymentRequest monthlyPaymentRequest) {
+        return (monthlyPaymentRequest.getHomePrice() - monthlyPaymentRequest.getDownPayment()) == monthlyPaymentRequest.getMortgageAmount();
+    }
 }
