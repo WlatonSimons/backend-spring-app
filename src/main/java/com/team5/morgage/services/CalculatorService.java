@@ -16,9 +16,14 @@ import org.springframework.stereotype.Service;
 public class CalculatorService {
 
     @Autowired
-    private MortgageValueRepository mortgageValueRepository;
+    private final MortgageValueRepository mortgageValueRepository;
 
-    private final Validation validator = new Validation();
+    private final Validation validator;
+
+    public CalculatorService(MortgageValueRepository mortgageValueRepository) {
+        this.mortgageValueRepository = mortgageValueRepository;
+        this.validator = new Validation();
+    }
 
     public float calculateMaxLoan(@Valid MaxLoanRequest maxLoanRequest) {
         MortgageValue mortgageValue = mortgageValueRepository.findById(1L)
@@ -61,7 +66,6 @@ public class CalculatorService {
                         .build();
             }
         } else {
-            // ToDo: return descriptive error
             return MonthlyPaymentResponse.builder()
                     .totalPayableAmount(-1)
                     .monthlyPayment(-1)

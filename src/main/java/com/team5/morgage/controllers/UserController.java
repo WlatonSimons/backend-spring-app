@@ -5,40 +5,38 @@ import com.team5.morgage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
-
+@RequestMapping(value = "/user")
 @RestController
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping("/test")
-    public String home() {
-        return "BE works";
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public User getUserById(@PathVariable Long userId) {
         return userService.getUserById(userId);
     }
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public User getUserByLoginData(@RequestBody User user) {
         return userService.getUserByLoginData(user);
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/create")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    @PutMapping("/user/update")
+    @PutMapping("/update")
     public User updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
 
-    @DeleteMapping("/user/delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public void delete(@PathVariable Long userId) {
         userService.delete(userId);
     }

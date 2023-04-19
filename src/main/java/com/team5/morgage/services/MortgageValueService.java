@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 public class MortgageValueService {
 
     @Autowired
-    private MortgageValueRepository mortgageValueRepository;
+    private final MortgageValueRepository mortgageValueRepository;
+
+    public MortgageValueService(MortgageValueRepository mortgageValueRepository) {
+        this.mortgageValueRepository = mortgageValueRepository;
+    }
 
     public MortgageValue getMortgageById(Long mortgageId) {
         return mortgageValueRepository
