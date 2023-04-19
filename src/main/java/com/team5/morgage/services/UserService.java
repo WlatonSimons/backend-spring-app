@@ -24,10 +24,14 @@ public class UserService {
     private static final int ITERATIONS = 3;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    PasswordEncoder passwordEncoder =
-            new Argon2PasswordEncoder(SALT_LENGTH, HASH_LENGTH, PARALLELISM, MEMORY, ITERATIONS);
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new Argon2PasswordEncoder(SALT_LENGTH, HASH_LENGTH, PARALLELISM, MEMORY, ITERATIONS);
+    }
 
     public User createUser(User userRequest) {
         checkIfUserAlreadyExist(userRequest);

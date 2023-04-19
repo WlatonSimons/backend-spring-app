@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,14 @@ import java.util.List;
 public class ApplicationService {
 
     @Autowired
-    private ApplicationRepository applicationRepository;
+    private final ApplicationRepository applicationRepository;
+
+    public ApplicationService(ApplicationRepository applicationRepository) {
+        this.applicationRepository = applicationRepository;
+    }
 
     public Application saveSubmittedApplication(@Valid Application application) {
+        application.setDate(new Timestamp(System.currentTimeMillis()));
         return applicationRepository.save(application);
     }
 
