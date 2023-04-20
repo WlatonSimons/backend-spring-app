@@ -25,7 +25,7 @@ public class CalculatorController {
     }
 
     @PostMapping("/maxLoan")
-    public ResponseEntity<Float> calculateMaxLoan(@RequestBody @Valid MaxLoanRequest maxLoanRequest) {
+    public ResponseEntity<Integer> calculateMaxLoan(@RequestBody @Valid MaxLoanRequest maxLoanRequest) {
         return new ResponseEntity<>(calculatorService.calculateMaxLoan(maxLoanRequest), HttpStatus.CREATED);
     }
 

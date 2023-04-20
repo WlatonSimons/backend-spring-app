@@ -7,30 +7,32 @@ import com.team5.morgage.models.requests.MonthlyPaymentRequest;
 public class Validation {
 
     public boolean isMaxLoanLogicValid(MaxLoanRequest maxLoanRequest) {
+        float trueNetIncome = maxLoanRequest.getNetIncome() - maxLoanRequest.getMonthlyObligationAmount();
+
         float percent = maxLoanRequest.getMonthlyObligationAmount() * 100 / maxLoanRequest.getNetIncome();
 
         if (!maxLoanRequest.isSingleApplicant()) {
-            if (maxLoanRequest.getNetIncome() < 1000) {
-                throw new CustomException("Net income should be equal or more than 1000");
+            if (trueNetIncome < 1000) {
+                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 1000");
             }
         }
         if (maxLoanRequest.getFamilyMember() == 0) {
-            if (maxLoanRequest.getNetIncome() < 600) {
-                throw new CustomException("Net income should be equal or more than 600");
+            if (trueNetIncome < 600) {
+                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 600");
             }
         }
         if (maxLoanRequest.getFamilyMember() == 1) {
-            if (maxLoanRequest.getNetIncome() < 650) {
-                throw new CustomException("Net income should be equal or more than 650");
+            if (trueNetIncome < 650) {
+                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 650");
             }
         }
         if (maxLoanRequest.getFamilyMember() == 2) {
-            if (maxLoanRequest.getNetIncome() < 1000) {
-                throw new CustomException("Net income should be equal or more than 1000");
+            if (trueNetIncome < 1000) {
+                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 1000");
             }
         }
         if (percent > 40) {
-            throw new CustomException("Current monthly obligations can`t be more than 40% of net income");
+            throw new CustomException("Current monthly obligations (" + percent + "%) can`t be more than 40% of net income");
         }
         return true;
     }

@@ -1,6 +1,6 @@
 package com.team5.morgage.services;
 
-import com.team5.morgage.exceptions.MortgageNotFoundException;
+import com.team5.morgage.exceptions.CustomException;
 import com.team5.morgage.models.MortgageValue;
 import com.team5.morgage.models.requests.MonthlyPaymentRequest;
 import com.team5.morgage.models.responses.MonthlyPaymentResponse;
@@ -25,20 +25,19 @@ public class CalculatorService {
         this.validator = new Validation();
     }
 
-    public float calculateMaxLoan(@Valid MaxLoanRequest maxLoanRequest) {
+    public int calculateMaxLoan(@Valid MaxLoanRequest maxLoanRequest) {
         MortgageValue mortgageValue = mortgageValueRepository.findById(1L)
-                .orElseThrow(() -> new MortgageNotFoundException("There are no mortgage values present"));
+                .orElseThrow(() -> new CustomException("There are no mortgage values present"));
 
         if (validator.isMaxLoanLogicValid(maxLoanRequest)) {
-            return mortgageValue.getSpecialNumber() * maxLoanRequest.getNetIncome();
-        } else {
-            return -1;
+            return (int) (mortgageValue.getSpecialNumber() * maxLoanRequest.getNetIncome());
         }
+        return -1;
     }
 
     public MonthlyPaymentResponse calculateMonthlyPayment(MonthlyPaymentRequest monthlyPaymentRequest) {
         MortgageValue mortgageValue = mortgageValueRepository.findById(1L)
-                .orElseThrow(() -> new MortgageNotFoundException("There are no mortgage values present"));
+                .orElseThrow(() -> new CustomException("There are no mortgage values present"));
 
 
         if (validator.isMortgageAmountValid(monthlyPaymentRequest)) {
@@ -53,24 +52,17 @@ public class CalculatorService {
                         monthlyPaymentRequest.getMortgageAmount());
 
                 return MonthlyPaymentResponse.builder()
-                        .totalPayableAmount(totalPayableAmount)
-                        .monthlyPayment(calculationHelper.calculateMonthlyPayment(totalPayableAmount,
+                        .totalPayableAmount((int) totalPayableAmount)
+                        .monthlyPayment((int) calculationHelper.calculateMonthlyPayment(totalPayableAmount,
                                 monthlyPaymentRequest.getMortgageTerm()))
-                        .interestCost(interestPaidDuringWholePeriod)
-                        .build();
-            } else {
-                return MonthlyPaymentResponse.builder()
-                        .totalPayableAmount(-1)
-                        .monthlyPayment(-1)
-                        .interestCost(-1)
+                        .interestCost((int) interestPaidDuringWholePeriod)
                         .build();
             }
-        } else {
-            return MonthlyPaymentResponse.builder()
-                    .totalPayableAmount(-1)
-                    .monthlyPayment(-1)
-                    .interestCost(-1)
-                    .build();
         }
+        return MonthlyPaymentResponse.builder()
+                .totalPayableAmount(-1)
+                .monthlyPayment(-1)
+                .interestCost(-1)
+                .build();
     }
 }
