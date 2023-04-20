@@ -23,6 +23,7 @@ public class ApplicationService {
 
     public Application saveSubmittedApplication(@Valid Application application) {
         application.setDate(new Timestamp(System.currentTimeMillis()));
+        application.setStatus("New");
         return applicationRepository.save(application);
     }
 
