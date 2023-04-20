@@ -120,6 +120,17 @@ public class Application {
     @Column(name = "date", nullable = false)
     private Timestamp date;
 
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Timestamp getDate() {
         return date;
     }
