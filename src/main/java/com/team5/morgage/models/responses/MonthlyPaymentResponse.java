@@ -6,7 +6,7 @@ import lombok.Data;
 @Builder
 @Data
 public class MonthlyPaymentResponse {
-    private float monthlyPayment;
-    private float totalPayableAmount;
-    private float interestCost;
+    private int monthlyPayment;
+    private int totalPayableAmount;
+    private int interestCost;
 }
