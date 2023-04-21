@@ -30,4 +30,9 @@ public class ApplicationController {
     public List<Application> getAllApplications() {
         return applicationService.getAllApplications();
     }
+
+    @PatchMapping("/{applicationId}/setStatus")
+    public ResponseEntity<Application> setApplicationStatus(@PathVariable Long applicationId, @RequestBody String newStatus) {
+        return new ResponseEntity<>(applicationService.setApplicationStatus(applicationId, newStatus), HttpStatus.CREATED);
+    }
 }
