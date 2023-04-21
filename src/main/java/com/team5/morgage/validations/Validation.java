@@ -4,35 +4,51 @@ import com.team5.morgage.exceptions.CustomException;
 import com.team5.morgage.models.requests.MaxLoanRequest;
 import com.team5.morgage.models.requests.MonthlyPaymentRequest;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Validation {
+
+    private static final List<String> validStatus = Arrays.asList("New", "In progress", "Done", "Rejected");
+    private static final List<Integer> netIncomeStages = Arrays.asList(600, 650, 1000);
+    private static final int COMPARE_PERCENT = 40;
+    private static final int MIN_HOME_PRICE = 5000;
+    private static final int MIN_DOWN_PAYMENT_PERCENT = 15;
+    private static final int MAX_DOWN_PAYMENT_PERCENT = 99;
+    private static final int MIN_MORTGAGE_TERM = 1;
+    private static final int MAX_MORTGAGE_TERM = 30;
 
     public boolean isMaxLoanLogicValid(MaxLoanRequest maxLoanRequest) {
         float trueNetIncome = maxLoanRequest.getNetIncome() - maxLoanRequest.getMonthlyObligationAmount();
 
-        float percent = maxLoanRequest.getMonthlyObligationAmount() * 100 / maxLoanRequest.getNetIncome();
+        float percent = maxLoanRequest.getMonthlyObligationAmount() * 100 / trueNetIncome;
 
         if (!maxLoanRequest.isSingleApplicant()) {
-            if (trueNetIncome < 1000) {
-                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 1000");
+            if (trueNetIncome < netIncomeStages.get(2)) {
+                throw new CustomException("Net income (" + (int) trueNetIncome + ") should be equal or more than 1000");
             }
         }
-        if (maxLoanRequest.getFamilyMember() == 0) {
-            if (trueNetIncome < 600) {
-                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 600");
-            }
+
+        switch (maxLoanRequest.getFamilyMember()) {
+            case 0:
+                if (trueNetIncome < netIncomeStages.get(0)) {
+                    throw new CustomException("Net income (" + (int) trueNetIncome + ") should be equal or more than 600");
+                }
+                break;
+            case 1:
+                if (trueNetIncome < netIncomeStages.get(1)) {
+                    throw new CustomException("Net income (" + (int) trueNetIncome + ") should be equal or more than 650");
+                }
+                break;
+            case 2:
+                if (trueNetIncome < netIncomeStages.get(2)) {
+                    throw new CustomException("Net income (" + (int) trueNetIncome + ") should be equal or more than 1000");
+                }
+                break;
         }
-        if (maxLoanRequest.getFamilyMember() == 1) {
-            if (trueNetIncome < 650) {
-                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 650");
-            }
-        }
-        if (maxLoanRequest.getFamilyMember() == 2) {
-            if (trueNetIncome < 1000) {
-                throw new CustomException("Net income (" + trueNetIncome + ") should be equal or more than 1000");
-            }
-        }
-        if (percent > 40) {
-            throw new CustomException("Current monthly obligations (" + percent + "%) can`t be more than 40% of net income");
+
+        if (percent > COMPARE_PERCENT) {
+            throw new CustomException("Current monthly obligations (" + (int) percent + "%) can`t be more than 40% of net income");
         }
         return true;
     }
@@ -40,23 +56,38 @@ public class Validation {
     public boolean isMonthlyPaymentLogicValid(MonthlyPaymentRequest monthlyPaymentRequest) {
         float downPaymentPercent = monthlyPaymentRequest.getDownPayment() * 100 / monthlyPaymentRequest.getHomePrice();
 
-        if (monthlyPaymentRequest.getHomePrice() < 5000) {
-            throw new CustomException("Min home price is 5000");
+        if (monthlyPaymentRequest.getHomePrice() < MIN_HOME_PRICE) {
+            throw new CustomException("Min home price is " + MIN_HOME_PRICE);
         }
-        if (downPaymentPercent < 15 || downPaymentPercent > 99) {
-            throw new CustomException("Down payment can`t be less than 15% and more than 99%");
+        if (downPaymentPercent < MIN_DOWN_PAYMENT_PERCENT || downPaymentPercent > MAX_DOWN_PAYMENT_PERCENT) {
+            throw new CustomException("Down payment can`t be less than " + MIN_DOWN_PAYMENT_PERCENT
+                    + "% and more than " + MAX_DOWN_PAYMENT_PERCENT + "%");
         }
-        if (monthlyPaymentRequest.getMortgageTerm() < 1 || monthlyPaymentRequest.getMortgageTerm() > 30) {
-            throw new CustomException("Mortgage term can`t be shorter than 1 year and longer than 30 years");
+        if (monthlyPaymentRequest.getMortgageTerm() < MIN_MORTGAGE_TERM
+                || monthlyPaymentRequest.getMortgageTerm() > MAX_MORTGAGE_TERM) {
+
+            throw new CustomException("Mortgage term can`t be shorter than " + MIN_MORTGAGE_TERM
+                    + " year(s) and longer than " + MAX_MORTGAGE_TERM + " years");
         }
         return true;
     }
 
     public boolean isMortgageAmountValid(MonthlyPaymentRequest monthlyPaymentRequest) {
-        if (!((monthlyPaymentRequest.getHomePrice() - monthlyPaymentRequest.getDownPayment()) == monthlyPaymentRequest.getMortgageAmount())) {
-            throw new CustomException("Mortgage amount should be homePrice - downPayment");
+        if (!((monthlyPaymentRequest.getHomePrice() - monthlyPaymentRequest.getDownPayment())
+                == monthlyPaymentRequest.getMortgageAmount())) {
+
+            throw new CustomException("Mortgage amount should be - "
+                    + (int) (monthlyPaymentRequest.getHomePrice() - monthlyPaymentRequest.getDownPayment()));
         } else {
             return true;
+        }
+    }
+
+    public boolean isStatusCorrect(String newStatus) {
+        if (validStatus.contains(newStatus)) {
+            return true;
+        } else {
+            throw new CustomException("New status (" + newStatus + ") is not acceptable");
         }
     }
 }

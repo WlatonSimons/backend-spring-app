@@ -30,7 +30,7 @@ public class CalculatorService {
                 .orElseThrow(() -> new CustomException("There are no mortgage values present"));
 
         if (validator.isMaxLoanLogicValid(maxLoanRequest)) {
-            return (int) (mortgageValue.getSpecialNumber() * maxLoanRequest.getNetIncome());
+            return (int) (mortgageValue.getSpecialNumber() * (maxLoanRequest.getNetIncome() - maxLoanRequest.getMonthlyObligationAmount()));
         }
         return -1;
     }
