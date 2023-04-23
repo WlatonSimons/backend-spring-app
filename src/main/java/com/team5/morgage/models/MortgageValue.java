@@ -15,6 +15,9 @@ public class MortgageValue {
     @Column(name = "management_fee")
     private float managementFee;
 
+    @Column(name = "api_key")
+    private String apiKey;
+
     public Long getId() {
         return id;
     }
@@ -37,5 +40,13 @@ public class MortgageValue {
 
     public void setManagementFee(float managementFee) {
         this.managementFee = managementFee;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 }
