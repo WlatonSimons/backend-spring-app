@@ -11,7 +11,6 @@ public class Validation {
 
     private static final List<String> validStatus = Arrays.asList("New", "In progress", "Done", "Rejected");
     private static final List<Integer> netIncomeStages = Arrays.asList(600, 650, 1000);
-    private static final int COMPARE_PERCENT = 40;
     private static final int MIN_HOME_PRICE = 5000;
     private static final int MIN_DOWN_PAYMENT_PERCENT = 15;
     private static final int MAX_DOWN_PAYMENT_PERCENT = 99;
@@ -47,9 +46,6 @@ public class Validation {
                 break;
         }
 
-        if (percent > COMPARE_PERCENT) {
-            throw new CustomException("Current monthly obligations (" + (int) percent + "%) can`t be more than 40% of net income");
-        }
         return true;
     }
 
