@@ -3,7 +3,7 @@ package com.team5.mortgage.services;
 import com.team5.mortgage.exceptions.CustomException;
 import com.team5.mortgage.models.Application;
 import com.team5.mortgage.repositories.ApplicationRepository;
-import com.team5.mortgage.validations.Validation;
+import com.team5.mortgage.validators.ApplicationValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
@@ -19,11 +19,11 @@ public class ApplicationService {
     @Autowired
     private final ApplicationRepository applicationRepository;
 
-    private final Validation validator;
+    private final ApplicationValidator applicationValidator;
 
     public ApplicationService(ApplicationRepository applicationRepository) {
         this.applicationRepository = applicationRepository;
-        this.validator = new Validation();
+        this.applicationValidator = new ApplicationValidator();
     }
 
     public Application saveSubmittedApplication(@Valid Application application) {
@@ -42,7 +42,7 @@ public class ApplicationService {
         Application updateApplication = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new CustomException("Application with id: " + applicationId + " does not exist"));
 
-        if (newStatus != null && !newStatus.isEmpty() && validator.isStatusCorrect(newStatus)) {
+        if (newStatus != null && !newStatus.isEmpty() && applicationValidator.isStatusCorrect(newStatus)) {
             updateApplication.setStatus(newStatus);
             return applicationRepository.save(updateApplication);
         } else {
