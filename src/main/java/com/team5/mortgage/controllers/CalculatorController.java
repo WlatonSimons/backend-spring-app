@@ -1,8 +1,9 @@
 package com.team5.mortgage.controllers;
 
-import com.team5.mortgage.models.requests.MonthlyPaymentRequest;
-import com.team5.mortgage.models.responses.MonthlyPaymentResponse;
 import com.team5.mortgage.models.requests.MaxLoanRequest;
+import com.team5.mortgage.models.requests.MonthlyPaymentRequest;
+import com.team5.mortgage.models.responses.MaxLoanResponse;
+import com.team5.mortgage.models.responses.MonthlyPaymentResponse;
 import com.team5.mortgage.services.CalculatorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class CalculatorController {
     }
 
     @PostMapping("/maxLoan")
-    public ResponseEntity<Integer> calculateMaxLoan(@RequestBody @Valid MaxLoanRequest maxLoanRequest) {
+    public ResponseEntity<MaxLoanResponse> calculateMaxLoan(@RequestBody @Valid MaxLoanRequest maxLoanRequest) {
         return new ResponseEntity<>(calculatorService.calculateMaxLoan(maxLoanRequest), HttpStatus.CREATED);
     }
 
