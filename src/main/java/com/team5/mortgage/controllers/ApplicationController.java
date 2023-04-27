@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping(value = "/applications")
@@ -27,8 +28,12 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public List<Application> getAllApplications() {
-        return applicationService.getAllApplications();
+    public ResponseEntity<List<Application>> getAllApplications(
+            @RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "term", required = false) String term
+            ){
+
+        return applicationService.getApplications(id, term);
     }
 
     @PatchMapping("/{applicationId}")
