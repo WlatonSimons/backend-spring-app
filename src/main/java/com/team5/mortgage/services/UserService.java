@@ -40,7 +40,7 @@ public class UserService {
         return userRepository.save(userRequest);
     }
 
-    public User getUserById(Long userId) {
+    public User fetchUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() ->
                         new CustomException(HttpStatus.NOT_FOUND.value() +
@@ -99,6 +99,6 @@ public class UserService {
     }
 
     public void delete(Long userId) {
-        userRepository.delete(getUserById(userId));
+        userRepository.delete(fetchUserById(userId));
     }
 }
