@@ -17,8 +17,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Long userId) {
-        return userService.getUserById(userId);
+    public User fetchUserById(@PathVariable Long userId) {
+        return userService.fetchUserById(userId);
     }
 
     @PostMapping("/login")

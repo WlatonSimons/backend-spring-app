@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class ChatBotController {
 
     @GetMapping
-    public ResponseEntity<String> getApiKey() {
+    public ResponseEntity<String> fetchApiKey() {
         return new ResponseEntity<>(System.getenv("API_KEY"), HttpStatus.ACCEPTED);
     }
 }

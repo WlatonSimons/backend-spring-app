@@ -30,6 +30,7 @@ public class Application {
     @Email(message = "Email must be well-formed email address")
     @Column(name = "email", nullable = false)
     private String email;
+
     @NotNull(message = "Phone number can`t be empty or null")
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;

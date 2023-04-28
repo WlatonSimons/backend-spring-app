@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ApplicationService {
@@ -30,7 +29,9 @@ public class ApplicationService {
     }
 
     public Application saveSubmittedApplication(@Valid Application application) {
-        application.setDate(new Timestamp(System.currentTimeMillis()));
+        if (application.getDate() == null) {
+            application.setDate(new Timestamp(System.currentTimeMillis()));
+        }
         application.setStatus("New");
         return applicationRepository.save(application);
     }
@@ -45,7 +46,7 @@ public class ApplicationService {
         Application updateApplication = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new CustomException("Application with id: " + applicationId + " does not exist"));
 
-        if (newStatus != null && !newStatus.isEmpty() && applicationValidator.isStatusCorrect(newStatus)) {
+        if (newStatus != null && applicationValidator.isStatusCorrect(newStatus)) {
             updateApplication.setStatus(newStatus);
             return applicationRepository.save(updateApplication);
         } else {
@@ -53,7 +54,7 @@ public class ApplicationService {
         }
     }
 
-    public ResponseEntity<List<Application>> getApplications(Long id, String term) {
+    public ResponseEntity<List<Application>> fetchApplications(Long id, String term) {
         List <Application> applications = new ArrayList<>();
 
         if (id != null) {
