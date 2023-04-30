@@ -36,13 +36,13 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public List<Application> getAllApplications() {
+    public List<Application> fetchAllApplications() {
         List<Application> applications = new ArrayList<>();
         Streamable.of(applicationRepository.findAll()).forEach(applications::add);
         return applications;
     }
 
-    public Application setApplicationStatus(Long applicationId, String newStatus) {
+    public Application changeApplicationStatus(Long applicationId, String newStatus) {
         Application updateApplication = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new CustomException("Application with id: " + applicationId + " does not exist"));
 
@@ -55,27 +55,27 @@ public class ApplicationService {
     }
 
     public ResponseEntity<List<Application>> fetchApplications(Long id, String term) {
-        List <Application> applications = new ArrayList<>();
+        List<Application> applications = new ArrayList<>();
 
         if (id != null) {
             String normalizedId = id.toString();
 
-            getAllApplications()
+            fetchAllApplications()
                     .stream()
                     .filter(application -> application.getId().toString().contains(normalizedId))
-                    .forEach(applications :: add);
+                    .forEach(applications::add);
         }
         if (term != null) {
             String normalizedTerm = term.toLowerCase();
 
-            getAllApplications()
+            fetchAllApplications()
                     .stream()
-                    .filter(application -> ( application.getFirstName().toLowerCase().contains(normalizedTerm) ) ||
+                    .filter(application -> (application.getFirstName().toLowerCase().contains(normalizedTerm)) ||
                             application.getLastName().toLowerCase().contains(normalizedTerm))
                     .forEach(applications::add);
         }
         if (id == null && term == null) {
-            applications.addAll(getAllApplications());
+            applications.addAll(fetchAllApplications());
         }
 
         if (applications.isEmpty()) {
@@ -83,6 +83,5 @@ public class ApplicationService {
         }
 
         return new ResponseEntity<>(applications, HttpStatus.OK);
-
     }
 }

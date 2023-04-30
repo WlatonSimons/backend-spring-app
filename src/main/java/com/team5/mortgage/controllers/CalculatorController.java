@@ -25,12 +25,12 @@ public class CalculatorController {
         this.calculatorService = calculatorService;
     }
 
-    @PostMapping("/maxLoan")
+    @PostMapping("/max-loan")
     public ResponseEntity<MaxLoanResponse> calculateMaxLoan(@RequestBody @Valid MaxLoanRequest maxLoanRequest) {
         return new ResponseEntity<>(calculatorService.calculateMaxLoan(maxLoanRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("/monthlyPayment")
+    @PostMapping("/monthly-payment")
     public ResponseEntity<MonthlyPaymentResponse> calculateMonthlyPayment(
             @RequestBody @Valid MonthlyPaymentRequest monthlyPaymentRequest) {
         return new ResponseEntity<>(

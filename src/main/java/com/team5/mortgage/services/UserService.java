@@ -1,8 +1,8 @@
 package com.team5.mortgage.services;
 
 import com.team5.mortgage.exceptions.CustomException;
-import com.team5.mortgage.repositories.UserRepository;
 import com.team5.mortgage.models.User;
+import com.team5.mortgage.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
@@ -47,7 +47,7 @@ public class UserService {
                                 " User with id: " + userId + " does not exist"));
     }
 
-    public User getUserByLoginData(User loginUser) {
+    public User fetchUserByLoginData(User loginUser) {
         List<User> users = new ArrayList<>();
         Streamable.of(userRepository.findAll()).forEach(users::add);
 
@@ -61,7 +61,7 @@ public class UserService {
     }
 
     public void checkIfUserAlreadyExist(User userRequest) {
-        for (User usr : getAllUsers()) {
+        for (User usr : fetchAllUsers()) {
             if (usr.getUsername() != null && usr.getUsername().equals(userRequest.getUsername())) {
                 throw new CustomException("User with name: " + userRequest.getUsername() + " already exists");
             }
@@ -92,7 +92,7 @@ public class UserService {
         return userRepository.save(updateUser);
     }
 
-    public List<User> getAllUsers() {
+    public List<User> fetchAllUsers() {
         List<User> users = new ArrayList<>();
         Streamable.of(userRepository.findAll()).forEach(users::add);
         return users;
