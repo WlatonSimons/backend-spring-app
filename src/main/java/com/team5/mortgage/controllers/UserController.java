@@ -22,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public User getUserByLoginData(@RequestBody User user) {
-        return userService.getUserByLoginData(user);
+    public User fetchUserByLoginData(@RequestBody User user) {
+        return userService.fetchUserByLoginData(user);
     }
 
     @PostMapping

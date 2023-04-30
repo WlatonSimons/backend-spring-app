@@ -30,13 +30,13 @@ public class ApplicationController {
     public ResponseEntity<List<Application>> fetchAllApplications(
             @RequestParam(value = "id", required = false) Long id,
             @RequestParam(value = "term", required = false) String term
-            ){
+    ) {
 
         return applicationService.fetchApplications(id, term);
     }
 
     @PatchMapping("/{applicationId}")
-    public ResponseEntity<Application> setApplicationStatus(@PathVariable Long applicationId, @RequestBody String newStatus) {
-        return new ResponseEntity<>(applicationService.setApplicationStatus(applicationId, newStatus), HttpStatus.CREATED);
+    public ResponseEntity<Application> changeApplicationStatus(@PathVariable Long applicationId, @RequestBody String newStatus) {
+        return new ResponseEntity<>(applicationService.changeApplicationStatus(applicationId, newStatus), HttpStatus.CREATED);
     }
 }
